@@ -1,12 +1,17 @@
 from datetime import date, timedelta
 import re
 from Models.TradeEntry import TradeEntry
+from Constants import CAPITAL_TRADES_URL
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+
+# https://www.barchart.com/investing-ideas/politician-insider-trading#
+# This site does dates based on trade dates. So maybe I can pull from here too?
 
 
 def getTradesByPublishedDate() -> list:
@@ -21,7 +26,7 @@ def getTradesByPublishedDate() -> list:
     driver = webdriver.Chrome(service=service, options=options)
 
     # Load the webpage
-    url = "https://www.capitoltrades.com/trades?per_page=12"
+    url = CAPITAL_TRADES_URL
     driver.get(url)
 
     try:
@@ -52,6 +57,7 @@ def getTradesByPublishedDate() -> list:
                     row_data.append(cell_text)
             table_data.append(row_data)
         
+        print("Obtained Raw Data from capitol trades")
         return fixDatesForList(table_data[1:])
     except Exception as e:
         print("Error:", e)
@@ -64,11 +70,9 @@ def getTradesByPublishedDate() -> list:
 def fixDatesForList(data: list) -> list:
     trade_entries = []
 
+    print("Fixing Dates From the trades")
     for trade in data:
-        # print("Single trade: ", trade)
-        # politician_party, issuer_ticker, published, traded, filed_after, owner, buy_or_sell, size, price = map(lambda item: item.replace("\n", " "), trade)
         trade_components = [item.replace("\n", " ") for item in trade]
-        # print("Trying to fix this stuff", trade_components)
 
         # Split Politician and Party
         politician_and_party = trade_components[0].split(" ")
@@ -118,7 +122,6 @@ def parseAndReplaceTodayDate(date_string: str) -> str:
     else:
         day = parts[0]
 
-    # Check if the date string contains "Today"
     if day.lower() == "today":
         today = date.today()
         return f"{today.year} {today.strftime("%b")} {today.day}"

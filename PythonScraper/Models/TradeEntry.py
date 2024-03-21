@@ -16,3 +16,8 @@ class TradeEntry:
         return f"Politician: {self.Politician}, Party: {self.Party}, Issuer: {self.Issuer}, Ticker: {self.Ticker}, " \
                f"Published: {self.Published}, Traded: {self.Traded}, FiledAfter: {self.FiledAfter}, BuyOrSell: {self.BuyOrSell}, " \
                f"Owner: {self.Owner}, Size: {self.Size}, Price: {self.Price}"
+    
+    def format(self):
+        """Format the trade entry as a list of values."""
+        return [getattr(self, field) for field in ['Politician', 'Party', 'Issuer', 'Ticker', 'Published', 'Traded',
+                                                   'FiledAfter', 'BuyOrSell', 'Owner', 'Size', 'Price']]
