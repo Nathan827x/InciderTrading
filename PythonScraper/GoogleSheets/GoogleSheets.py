@@ -21,12 +21,12 @@ def writeToInciderSheet(trade_entries):
         data = [entry.format() for entry in trade_entries]
 
         # TODO: We need to check at what part of the data is new. We then split the data arr and then we can write the rest of it.
-        worksheet.update("A2", data)
+        
+        new_length = len(worksheet.col_values(1)) + 1
+        worksheet.update("A" + str(new_length), data)
 
         return True
         
     except:
 
         print("FAILED TO WRITE TO EXCEL SHEET")
-    # print(sheet.worksheets())
-
