@@ -20,9 +20,10 @@ def writeToInciderSheet(trade_entries):
 
         data = [entry.format() for entry in trade_entries]
 
-        # TODO: We need to check at what part of the data is new. We then split the data arr and then we can write the rest of it.
+        total_rows = len(worksheet.col_values(1))
+        data = eliminateRepeatedData(data, worksheet, total_rows)
         
-        new_length = len(worksheet.col_values(1)) + 1
+        new_length = total_rows + 1
         worksheet.update("A" + str(new_length), data)
 
         return True
@@ -30,3 +31,19 @@ def writeToInciderSheet(trade_entries):
     except:
 
         print("FAILED TO WRITE TO EXCEL SHEET")
+
+'''
+    This is to find where we last left off so we don't have repeated data.
+'''
+def eliminateRepeatedData(data, worksheet, total_rows):
+    print("Finding and fixing repeated data")
+    
+    last_element = worksheet.row_values(total_rows)
+
+    for index in range(len(data)):
+        entry = data[index]
+
+        if entry == last_element:
+            return data[index + 1:]
+
+    return last_element
