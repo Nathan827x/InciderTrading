@@ -124,10 +124,10 @@ def parseAndReplaceTodayDate(date_string: str) -> str:
 
     if day.lower() == "today":
         today = date.today()
-        return f"{today.year} {today.strftime("%b")} {today.day}"
+        return f"{today.year} {today.strftime('%b')} {today.day}"
     
     if day.lower() == "yesterday":
         yesterday = date.today() - timedelta(days = 1)
-        return f"{yesterday.year} {yesterday.strftime("%b")} {yesterday.day}"
+        return f"{yesterday.year} {yesterday.strftime('%b')} {yesterday.day}"
 
     
