@@ -37,13 +37,17 @@ def writeToInciderSheet(trade_entries):
 '''
 def eliminateRepeatedData(data, worksheet, total_rows):
     print("Finding and fixing repeated data")
-    
     last_element = worksheet.row_values(total_rows)
 
-    for index in range(len(data)):
+    index = 0
+    while index < range(len(data)) + 1:
         entry = data[index]
 
         if entry == last_element:
+            print("Erasing repeated data")
             return data[index + 1:]
 
-    return last_element
+        index += 1
+    
+    print("No data needed to be erased")
+    return data
