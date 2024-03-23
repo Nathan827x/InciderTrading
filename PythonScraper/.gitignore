@@ -1,0 +1,6 @@
+# This is my venv name
+inciderTrading
+
+__pycache__
+
+Secrets/*
